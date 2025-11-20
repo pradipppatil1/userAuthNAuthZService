@@ -14,3 +14,5 @@ Key capabilities include:
 ***Secure communication between microservices using bearer tokens***
 
 This service acts as the central identity provider, ensuring scalable, standards-based security across the system.
+
+Link for Implementing Spring boot auth server - https://docs.spring.io/spring-authorization-server/reference/getting-started.html
