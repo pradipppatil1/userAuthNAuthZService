@@ -16,3 +16,4 @@ Key capabilities include:
 This service acts as the central identity provider, ensuring scalable, standards-based security across the system.
 
 Link for Implementing Spring boot auth server - https://docs.spring.io/spring-authorization-server/reference/getting-started.html
+To use with Persistence DB for users - https://docs.spring.io/spring-authorization-server/reference/guides/how-to-jpa.html

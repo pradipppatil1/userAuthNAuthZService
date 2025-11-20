@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/auth")
+
 public class AuthController {
 
     AuthServiceImpl authService;
@@ -32,7 +32,7 @@ public class AuthController {
 
     }
 
-    @PostMapping("/signup")
+    @PostMapping("/auth/signup")
     public ResponseEntity<UserDto> signUp(@RequestBody UserDto user) throws UserAlreadyExistException {
         User userEntity = new User();
         userEntity = authService.signUp(user.getFullName(),user.getEmail(), user.getPassword());
@@ -42,7 +42,7 @@ public class AuthController {
 
     }
 
-    @PostMapping("/validate")
+    @PostMapping("/auth/validate")
     public ResponseEntity<ValidateResponseTokenDto> validate(@RequestBody ValidateRequestTokenDto tokenDto)  {
 
         if(tokenDto.getToken() == null || tokenDto.getUserId() == null) {
@@ -63,7 +63,7 @@ public class AuthController {
         return new ResponseEntity<>(validateResponseTokenDto, HttpStatus.OK);
     }
 
-    @GetMapping("/logout")
+    @GetMapping("/auth/logout")
     public boolean logout(@RequestHeader("authZ-token") String token) {
         return token != null && !token.isEmpty();
     }
