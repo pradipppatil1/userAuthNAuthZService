@@ -4,7 +4,7 @@ This document summarizes the key concepts of microservices architecture, focusin
 
 ---
 
-## 🏗️ 1. Microservices Architecture
+##  1. Microservices Architecture
 
 Microservices architecture is a way to structure a large application as a collection of smaller, independent, and loosely coupled services.
 
@@ -13,7 +13,7 @@ Microservices architecture is a way to structure a large application as a collec
 
 ---
 
-## 📞 2. Communication Among Services
+##  2. Communication Among Services
 
 Services must communicate to complete a transaction.
 
@@ -24,7 +24,7 @@ Services must communicate to complete a transaction.
 
 ---
 
-## ⚖️ 3. Load Balancing (Distributing Traffic)
+##  3. Load Balancing (Distributing Traffic)
 
 Load balancing ensures that requests are evenly distributed across multiple running instances of a service, preventing any single instance from being overloaded.
 
@@ -33,7 +33,7 @@ Load balancing ensures that requests are evenly distributed across multiple runn
 
 ---
 
-## 🔎 4. Service Discovery (The Real-Time Phonebook)
+##  4. Service Discovery (The Real-Time Phonebook)
 
 Service discovery is the mechanism that allows microservices to find each other's network locations dynamically, as IPs and ports change during scaling operations.
 
@@ -47,7 +47,7 @@ Netflix Eureka is the primary tool used in Spring Cloud for service discovery. I
 
 ---
 
-## ⚙️ 5. Spring Cloud & Eureka Implementation
+##  5. Spring Cloud & Eureka Implementation
 
 Spring Cloud simplifies the integration of service discovery and load balancing into your application code.
 
