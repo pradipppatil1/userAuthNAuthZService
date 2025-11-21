@@ -1,4 +1,4 @@
-# ☁️ Comprehensive Revision Notes: Microservices & Spring Cloud
+# Service Discovery: Microservices & Spring Cloud
 
 This document summarizes the key concepts of microservices architecture, focusing on inter-service communication, load balancing, and **Service Discovery** using **Spring Cloud** and **Netflix Eureka**.
 
