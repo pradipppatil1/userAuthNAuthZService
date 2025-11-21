@@ -1,6 +1,9 @@
 package com.pradip.authservice.userauthnauthzservice.services;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.pradip.authservice.userauthnauthzservice.dto.SendEmailDto;
 import com.pradip.authservice.userauthnauthzservice.dto.UserDto;
 import com.pradip.authservice.userauthnauthzservice.dto.ValidateRequestTokenDto;
 import com.pradip.authservice.userauthnauthzservice.exception.UserAlreadyExistException;
@@ -15,6 +18,7 @@ import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -32,17 +36,24 @@ public class AuthServiceImpl implements AuthService {
     private final SessionRepository sessionRepository;
     private final SecretKey secretKey;
     private final long expirationTime;
-    PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
+    private final KafkaTemplate<String, String> kafkaTemplate;
+    private final ObjectMapper objectMapper;
+
 
     public AuthServiceImpl(UserRepository userRepository, SessionRepository sessionRepository,
                            @Value("${jwt.secret}") String secret,
                            @Value("${jwt.expiration}") Long expiration,
-                           PasswordEncoder passwordEncoder) {
+                           PasswordEncoder passwordEncoder,
+                           KafkaTemplate<String, String> kafkaTemplate,
+                           ObjectMapper objectMapper) {
         this.userRepository = userRepository;
         this.sessionRepository = sessionRepository;
         this.secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
         this.expirationTime = expiration;
         this.passwordEncoder = passwordEncoder;
+        this.kafkaTemplate = kafkaTemplate;
+        this.objectMapper = objectMapper;
     }
 
     @Override
@@ -90,7 +101,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public User signUp(String fullName, String email, String password) throws UserAlreadyExistException {
+    public User signUp(String fullName, String email, String password) throws UserAlreadyExistException, JsonProcessingException {
         Optional<User> userOptional = userRepository.findByEmail(email);
 
         if(userOptional.isPresent()) {
@@ -101,6 +112,18 @@ public class AuthServiceImpl implements AuthService {
         user.setEmail(email);
         user.setPassword(passwordEncoder.encode(password));
         user.setFullName(fullName);
+
+        // Intilialize sendemaildto
+        SendEmailDto sendEmailDto = new SendEmailDto();
+        sendEmailDto.setEmail(user.getEmail());
+        sendEmailDto.setEmailSubject("Welcome to Jigisa");
+        sendEmailDto.setEmailBody("Welcome to Jigisa, your journey start from now!");
+
+        // send email
+        kafkaTemplate.send(
+                "SendEmail",
+                objectMapper.writeValueAsString(sendEmailDto)
+        );
 
         userRepository.save(user);
 

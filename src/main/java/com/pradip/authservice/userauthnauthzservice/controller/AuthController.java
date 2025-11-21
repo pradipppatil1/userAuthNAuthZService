@@ -1,5 +1,6 @@
 package com.pradip.authservice.userauthnauthzservice.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.pradip.authservice.userauthnauthzservice.dto.LoginDto;
 import com.pradip.authservice.userauthnauthzservice.dto.UserDto;
 import com.pradip.authservice.userauthnauthzservice.dto.ValidateRequestTokenDto;
@@ -33,7 +34,7 @@ public class AuthController {
     }
 
     @PostMapping("/auth/signup")
-    public ResponseEntity<UserDto> signUp(@RequestBody UserDto user) throws UserAlreadyExistException {
+    public ResponseEntity<UserDto> signUp(@RequestBody UserDto user) throws UserAlreadyExistException, JsonProcessingException {
         User userEntity = new User();
         userEntity = authService.signUp(user.getFullName(),user.getEmail(), user.getPassword());
        UserDto userDto = UserDto.from(userEntity);
